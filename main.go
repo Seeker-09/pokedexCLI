@@ -32,13 +32,23 @@ func getCommands() map[string]cliCommand {
 			description: "Displays a help Message",
 			action:      helpAction,
 		},
+		"exit": {
+			name:        "exit",
+			description: "Exits the Pokedex",
+			action:      exitAction,
+		},
 	}
 }
 
+func exitAction() {
+	os.Exit(0)
+}
+
 func helpAction() {
+	fmt.Println("Sure! Here is a list of commands: ")
+	fmt.Println("")
 	for _, c := range getCommands() {
-		fmt.Println("Sure! Here is a list of commands: ")
-		fmt.Println("")
 		fmt.Printf("%s - %s\n", c.name, c.description)
 	}
+	fmt.Println("")
 }
