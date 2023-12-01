@@ -4,6 +4,7 @@ import (
 	"bufio"
 	"fmt"
 	"os"
+	"strings"
 )
 
 func main() {
@@ -13,8 +14,13 @@ func main() {
 		fmt.Print("Pokedex > ")
 		s.Scan()
 		input := s.Text()
+		input = strings.ToLower(input)
 		commands := getCommands()
-		command := commands[input]
+		command, commandExists := commands[input]
+		if !commandExists {
+			fmt.Println("That command does not exist. Type 'help' for a list of commands")
+			continue
+		}
 		command.action()
 	}
 }
