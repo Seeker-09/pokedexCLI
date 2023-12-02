@@ -2,14 +2,11 @@ package main
 
 import (
 	"fmt"
-	"github.com/Seeker-09/pokedexCLI/internal/pokeapi"
 	"log"
 )
 
-func callbackMap() error {
-	pokeapiClient := pokeapi.NewClient()
-
-	resp, err := pokeapiClient.ListLocationAreas()
+func callbackMap(cfg *config) error {
+	resp, err := cfg.pokeapiClient.ListLocationAreas(cfg.nextLocationAreaURL)
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -17,5 +14,7 @@ func callbackMap() error {
 	for _, area := range resp.Results {
 		fmt.Printf(" - %s\n", area.Name)
 	}
+	cfg.nextLocationAreaURL = resp.Next
+	cfg.previousLocationURL = resp.Previous
 	return nil
 }
