@@ -10,7 +10,7 @@ import (
 
 func main() {
 	s := bufio.NewScanner(os.Stdin)
-	internal.GetLocationAreas()
+
 	for {
 		fmt.Print("Pokedex > ")
 		s.Scan()
@@ -58,11 +58,10 @@ func getCommands() map[string]cliCommand {
 }
 
 func mapbAction() {
-
 }
 
 func mapAction() {
-
+	internal.GetLocationAreas("https://pokeapi.co/api/v2/location-area/")
 }
 
 func exitAction() {
