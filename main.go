@@ -3,13 +3,14 @@ package main
 import (
 	"bufio"
 	"fmt"
+	"github.com/Seeker-09/pokedexCLI/internal"
 	"os"
 	"strings"
 )
 
 func main() {
 	s := bufio.NewScanner(os.Stdin)
-
+	internal.GetLocationAreas()
 	for {
 		fmt.Print("Pokedex > ")
 		s.Scan()
@@ -43,7 +44,25 @@ func getCommands() map[string]cliCommand {
 			description: "Exits the Pokedex",
 			action:      exitAction,
 		},
+		"map": {
+			name:        "map",
+			description: "Displays the names of the next 20 locations",
+			action:      mapAction,
+		},
+		"mapb": {
+			name:        "mapb",
+			description: "Displays the names of the previous 20 locations",
+			action:      mapbAction,
+		},
 	}
+}
+
+func mapbAction() {
+
+}
+
+func mapAction() {
+
 }
 
 func exitAction() {
