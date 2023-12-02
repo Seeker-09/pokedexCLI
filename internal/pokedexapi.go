@@ -1,29 +1,57 @@
 package internal
 
 import (
+	"encoding/json"
 	"fmt"
 	"io"
 	"log"
 	"net/http"
 )
 
-type config struct {
-	next     func()
-	previous func()
+type Config struct {
+	nextUrl     string
+	previousUrl string
 }
 
-func GetLocationAreas() {
-	res, err := http.Get("https://pokeapi.co/api/v2/location-area/")
+type Locations struct {
+	Next     string `json:"next"`
+	Previous string `json:"previous"`
+	Results  []struct {
+		Name string `json:"name"`
+		Url  string `json:"url"`
+	}
+}
+
+func GetLocationAreas(url string) {
+	res, err := http.Get(url)
 	if err != nil {
 		log.Fatal(err)
 	}
+
 	body, err := io.ReadAll(res.Body)
-	res.Body.Close()
+
+	err = res.Body.Close()
+	if err != nil {
+		return
+	}
 	if res.StatusCode > 299 {
 		log.Fatalf("Response failed with status code: %d and \nbody: %s\n", res.StatusCode, body)
 	}
 	if err != nil {
 		log.Fatal(err)
 	}
-	fmt.Printf("%s", body)
+
+	printLocationAreas(&body)
+}
+
+func printLocationAreas(body *[]byte) {
+	var locations Locations
+	err := json.Unmarshal(*body, &locations)
+	if err != nil {
+		fmt.Printf("Error %s\n", err)
+		return
+	}
+	for _, result := range locations.Results {
+		fmt.Println(result.Name)
+	}
 }
